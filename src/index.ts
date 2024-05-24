@@ -34,9 +34,9 @@ app.get("/:template", async (req, res) => {
     });
 
     let totalPixels = (await client.query("SELECT COUNT(timestamp) FROM placements WHERE template = $1;", [ req.params.template ])).rows[0].count as string;
-    let totalPixels5Minutes = (await client.query("SELECT COUNT(timestamp) FROM placements WHERE \"timestamp\" >= NOW() - INTERVAL '5 minutes' AND WHERE template = $1;", [ req.params.template ])).rows[0].count as string;
-    let totalPixels1Minutes = (await client.query("SELECT COUNT(timestamp) FROM placements WHERE \"timestamp\" >= NOW() - INTERVAL '1 minutes' AND WHERE template = $1;", [ req.params.template ])).rows[0].count as string;
-    let currentCompleteness = (await client.query("SELECT correct, total FROM completion_status GROUP BY correct, total ORDER BY max(timestamp) WHERE template = $1;", [ req.params.template ])).rows[0] as Completeness;
+    let totalPixels5Minutes = (await client.query("SELECT COUNT(timestamp) FROM placements WHERE \"timestamp\" >= NOW() - INTERVAL '5 minutes' AND template = $1;", [ req.params.template ])).rows[0].count as string;
+    let totalPixels1Minutes = (await client.query("SELECT COUNT(timestamp) FROM placements WHERE \"timestamp\" >= NOW() - INTERVAL '1 minutes' AND template = $1;", [ req.params.template ])).rows[0].count as string;
+    let currentCompleteness = (await client.query("SELECT correct, total FROM completion_status WHERE template = $1 GROUP BY correct, total ORDER BY max(timestamp);", [ req.params.template ])).rows[0] as Completeness;
     
     res.status(200).send({
         totalPixels: {
