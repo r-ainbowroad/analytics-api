@@ -1,0 +1,10 @@
+services:
+  analytics-api:
+    build: .
+    restart: unless-stopped
+    environment:
+      - PGUSER=api
+      - PGPASSWORD='password'
+      - PGHOST=localhost
+      - PGPORT=5432
+      - PGDATABASE=analytics
