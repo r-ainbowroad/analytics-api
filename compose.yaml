@@ -2,9 +2,11 @@ services:
   analytics-api:
     build: .
     restart: unless-stopped
+    ports:
+      - 8000:80
     environment:
       - PGUSER=api
-      - PGPASSWORD='password'
+      - PGPASSWORD=password
       - PGHOST=localhost
       - PGPORT=5432
       - PGDATABASE=analytics
